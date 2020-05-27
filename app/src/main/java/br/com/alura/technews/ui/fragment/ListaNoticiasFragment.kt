@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.alura.technews.R
+import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.fragment.extensios.mostraErro
 import br.com.alura.technews.ui.recyclerview.adapter.ListaNoticiasAdapter
 import br.com.alura.technews.ui.viewmodel.ListaNoticiasViewModel
@@ -31,6 +32,9 @@ class ListaNoticiasFragment : Fragment() {
     }
     private val viewModel: ListaNoticiasViewModel by viewModel()
 
+    var onNoticiaSelecionada: (noticia: Noticia) -> Unit = {}
+    var onNovaNoticiaClicado: () -> Unit = {}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         buscaNoticias()
@@ -52,7 +56,7 @@ class ListaNoticiasFragment : Fragment() {
 
     private fun configuraFabAdicionaNoticia() {
         fragment_lista_noticias_fab_salva_noticia.setOnClickListener {
-//            abreFormularioModoCriacao()
+            onNovaNoticiaClicado()
         }
     }
 
@@ -64,7 +68,7 @@ class ListaNoticiasFragment : Fragment() {
     }
 
     private fun configuraAdapter() {
-//        adapter.quandoItemClicado = this::abreVisualizadorNoticia
+        adapter.quandoItemClicado = onNoticiaSelecionada
     }
 
     private fun buscaNoticias() {
