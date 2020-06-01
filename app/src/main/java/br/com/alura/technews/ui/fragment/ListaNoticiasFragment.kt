@@ -1,10 +1,7 @@
 package br.com.alura.technews.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +20,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carregar as novas notícias"
 
-class ListaNoticiasFragment : Fragment() {
+class ListaNoticiasFragment : BaseFragment() {
 
     private val adapter by lazy {
         context?.let {
@@ -40,12 +37,8 @@ class ListaNoticiasFragment : Fragment() {
         buscaNoticias()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_lista_noticias, container, false)
+    override fun getLayout(): Int {
+        return R.layout.fragment_lista_noticias
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

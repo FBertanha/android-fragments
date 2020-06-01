@@ -20,9 +20,9 @@ import org.koin.core.parameter.parametersOf
 private const val NOTICIA_NAO_ENCONTRADA = "Notícia não encontrada"
 private const val MENSAGEM_FALHA_REMOCAO = "Não foi possível remover notícia"
 
-class VisualizaNoticiaFragment : Fragment() {
+class VisualizaNoticiaFragment : BaseFragment() {
 
-    var onEditaNoticia: () -> Unit = {}
+    var onEditaNoticia: (noticia : Noticia) -> Unit = {}
     var onRemoveNoticia: () -> Unit = {}
     var onFechar: () -> Unit = {}
 
@@ -49,14 +49,11 @@ class VisualizaNoticiaFragment : Fragment() {
         super.onCreate(savedInstanceState)
         verificaIdDaNoticia()
         buscaNoticiaSelecionada()
+        setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_visualiza_noticia, container, false)
+    override fun getLayout(): Int {
+        return R.layout.fragment_visualiza_noticia
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -65,7 +62,9 @@ class VisualizaNoticiaFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.visualiza_noticia_menu_edita -> onEditaNoticia()
+            R.id.visualiza_noticia_menu_edita -> {
+                viewModel.noticiaEncontrada.value?.let { onEditaNoticia}
+            }
             R.id.visualiza_noticia_menu_remove -> onRemoveNoticia()
         }
         return super.onOptionsItemSelected(item)
