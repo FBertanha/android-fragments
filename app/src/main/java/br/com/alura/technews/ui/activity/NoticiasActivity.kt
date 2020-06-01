@@ -8,6 +8,7 @@ import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.activity.extensions.addFragment
 import br.com.alura.technews.ui.activity.extensions.replaceFragment
+import br.com.alura.technews.ui.activity.extensions.transactionFragment
 import br.com.alura.technews.ui.fragment.ListaNoticiasFragment
 import br.com.alura.technews.ui.fragment.VisualizaNoticiaFragment
 
@@ -25,34 +26,31 @@ class NoticiasActivity : AppCompatActivity() {
             ListaNoticiasFragment()
         )
 
+        transactionFragment {
+            add(R.id.activity_noticias_container, ListaNoticiasFragment())
+        }
+
     }
 
     override fun onAttachFragment(fragment: Fragment?) {
         super.onAttachFragment(fragment)
 
-        if (fragment is ListaNoticiasFragment) {
-            fragment.onNoticiaSelecionada = {
-                abreVisualizadorNoticia(it)
+        when (fragment) {
+            is ListaNoticiasFragment -> {
+                fragment.onNoticiaSelecionada = this::abreVisualizadorNoticia
+                fragment.onNovaNoticiaClicado = this::abreFormularioModoCriacao
+
             }
-            fragment.onNovaNoticiaClicado = {
-                abreFormularioModoCriacao()
+
+            is VisualizaNoticiaFragment -> {
+                fragment.onFechar = this::finish
+                fragment.onRemoveNoticia = this::finish
+                fragment.onEditaNoticia = this::abreFormularioEdicao
             }
+
         }
 
-        if (fragment is VisualizaNoticiaFragment) {
-            fragment.onFechar = {
-                finish()
-            }
 
-            fragment.onRemoveNoticia = {
-                finish()
-            }
-
-            fragment.onEditaNoticia = {
-                noticiaSelecionada ->
-                abreFormularioEdicao(noticiaSelecionada)
-            }
-        }
     }
 
     private fun abreFormularioEdicao(noticia: Noticia) {
@@ -68,8 +66,10 @@ class NoticiasActivity : AppCompatActivity() {
 
     private fun abreVisualizadorNoticia(noticia: Noticia) {
 
-        replaceFragment(R.id.activity_noticias_container,
-            VisualizaNoticiaFragment.newInstance(noticia.id))
+        replaceFragment(
+            R.id.activity_noticias_container,
+            VisualizaNoticiaFragment.newInstance(noticia.id)
+        )
 
 
     }
