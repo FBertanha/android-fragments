@@ -21,11 +21,6 @@ class NoticiasActivity : AppCompatActivity() {
         setContentView(R.layout.activity_noticias)
         title = TITULO_APPBAR
 
-        addFragment(
-            R.id.activity_noticias_container,
-            ListaNoticiasFragment()
-        )
-
         transactionFragment {
             add(R.id.activity_noticias_container, ListaNoticiasFragment())
         }

@@ -1,6 +1,7 @@
 package br.com.alura.technews.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -61,11 +62,14 @@ class VisualizaNoticiaFragment : BaseFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        Log.e("", "aaa")
+
         when (item?.itemId) {
             R.id.visualiza_noticia_menu_edita -> {
-                viewModel.noticiaEncontrada.value?.let { onEditaNoticia}
+                Log.e("", "bbb ${viewModel.noticiaEncontrada.value}")
+                viewModel.noticiaEncontrada.value?.let { onEditaNoticia(it) }
             }
-            R.id.visualiza_noticia_menu_remove -> onRemoveNoticia()
+            R.id.visualiza_noticia_menu_remove -> onRemoveNoticia
         }
         return super.onOptionsItemSelected(item)
     }
