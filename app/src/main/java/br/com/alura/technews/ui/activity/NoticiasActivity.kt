@@ -12,17 +12,17 @@ import br.com.alura.technews.ui.activity.extensions.transactionFragment
 import br.com.alura.technews.ui.fragment.ListaNoticiasFragment
 import br.com.alura.technews.ui.fragment.VisualizaNoticiaFragment
 
-private const val TITULO_APPBAR = "Notícias"
 
 class NoticiasActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_noticias)
-        title = TITULO_APPBAR
 
-        transactionFragment {
-            add(R.id.activity_noticias_container, ListaNoticiasFragment())
+        if (savedInstanceState == null) {
+            transactionFragment {
+                add(R.id.activity_noticias_container, ListaNoticiasFragment())
+            }
         }
 
     }

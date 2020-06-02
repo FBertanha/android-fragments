@@ -17,6 +17,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
  * Created by felipebertanha on 26/May/2020
  */
 
+private const val TITULO_APPBAR = "Notícias"
 
 private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carregar as novas notícias"
 
@@ -45,6 +46,7 @@ class ListaNoticiasFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         configuraRecyclerView()
         configuraFabAdicionaNoticia()
+        activity?.title = TITULO_APPBAR
     }
 
     private fun configuraFabAdicionaNoticia() {
