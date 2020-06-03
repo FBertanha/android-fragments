@@ -21,7 +21,7 @@ class NoticiasActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             transactionFragment {
-                add(R.id.activity_noticias_container, ListaNoticiasFragment())
+                add(R.id.activity_noticias_container_primario, ListaNoticiasFragment())
             }
         }
 
@@ -62,7 +62,7 @@ class NoticiasActivity : AppCompatActivity() {
     private fun abreVisualizadorNoticia(noticia: Noticia) {
 
         replaceFragment(
-            R.id.activity_noticias_container,
+            R.id.activity_noticias_container_secundario,
             VisualizaNoticiaFragment.newInstance(noticia.id)
         )
 
