@@ -10,6 +10,7 @@ import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.activity.extensions.transactionFragment
 import br.com.alura.technews.ui.fragment.ListaNoticiasFragment
 import br.com.alura.technews.ui.fragment.VisualizaNoticiaFragment
+import kotlinx.android.synthetic.main.activity_noticias.*
 
 
 class NoticiasActivity : AppCompatActivity() {
@@ -21,6 +22,29 @@ class NoticiasActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             transactionFragment {
                 add(R.id.activity_noticias_container_primario, ListaNoticiasFragment())
+            }
+        } else {
+
+            supportFragmentManager.findFragmentByTag(VisualizaNoticiaFragment.TAG)?.let {
+                val newInstance = VisualizaNoticiaFragment.newInstance(it.arguments)
+
+                transactionFragment {
+                    remove(it)
+                }
+
+                supportFragmentManager.popBackStack()
+
+                transactionFragment {
+                    val container =
+                        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                            R.id.activity_noticias_container_secundario
+                        } else {
+                            addToBackStack(null)
+                            R.id.activity_noticias_container_primario
+                        }
+                    replace(container, newInstance, VisualizaNoticiaFragment.TAG)
+                }
+
             }
         }
 
@@ -68,7 +92,7 @@ class NoticiasActivity : AppCompatActivity() {
                     addToBackStack(null)
                     R.id.activity_noticias_container_primario
                 }
-            replace(container, VisualizaNoticiaFragment.newInstance(noticia.id))
+            replace(container, VisualizaNoticiaFragment.newInstance(noticia.id), VisualizaNoticiaFragment.TAG)
         }
 
     }

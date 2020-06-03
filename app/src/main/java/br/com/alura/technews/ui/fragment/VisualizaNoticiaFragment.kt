@@ -36,6 +36,8 @@ class VisualizaNoticiaFragment : BaseFragment() {
     private val viewModel: VisualizaNoticiaViewModel by viewModel { parametersOf(noticiaId) }
 
     companion object {
+        val TAG: String = VisualizaNoticiaFragment::class.java.name
+
         fun newInstance(noticiaId: Long): VisualizaNoticiaFragment {
             val visualizaNoticiaFragment = VisualizaNoticiaFragment()
 
@@ -43,6 +45,12 @@ class VisualizaNoticiaFragment : BaseFragment() {
             bundle.putLong(NOTICIA_ID_CHAVE, noticiaId)
             visualizaNoticiaFragment.arguments = bundle
 
+            return visualizaNoticiaFragment
+        }
+
+        fun newInstance(bundle: Bundle?): VisualizaNoticiaFragment {
+            val visualizaNoticiaFragment = VisualizaNoticiaFragment()
+            visualizaNoticiaFragment.arguments = bundle
             return visualizaNoticiaFragment
         }
 
