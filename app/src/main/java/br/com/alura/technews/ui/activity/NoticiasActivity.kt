@@ -19,6 +19,8 @@ class NoticiasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_noticias)
 
+
+
         if (savedInstanceState == null) {
             transactionFragment {
                 add(R.id.activity_noticias_container_primario, ListaNoticiasFragment())
@@ -36,7 +38,7 @@ class NoticiasActivity : AppCompatActivity() {
 
                 transactionFragment {
                     val container =
-                        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        if (activity_noticias_container_secundario != null) {
                             R.id.activity_noticias_container_secundario
                         } else {
                             addToBackStack(null)
@@ -86,7 +88,7 @@ class NoticiasActivity : AppCompatActivity() {
 
         transactionFragment {
             val container =
-                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                if (activity_noticias_container_secundario != null) {
                     R.id.activity_noticias_container_secundario
                 } else {
                     addToBackStack(null)
