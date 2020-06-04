@@ -1,10 +1,10 @@
 package br.com.alura.technews.ui.activity
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.activity.extensions.transactionFragment
@@ -18,38 +18,42 @@ class NoticiasActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_noticias)
+        configuraFragmentPeloEstado(savedInstanceState)
+    }
 
-
-
+    private fun configuraFragmentPeloEstado(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             transactionFragment {
                 add(R.id.activity_noticias_container_primario, ListaNoticiasFragment())
             }
         } else {
-
-            supportFragmentManager.findFragmentByTag(VisualizaNoticiaFragment.TAG)?.let {
-                val newInstance = VisualizaNoticiaFragment.newInstance(it.arguments)
-
-                transactionFragment {
-                    remove(it)
-                }
-
-                supportFragmentManager.popBackStack()
-
-                transactionFragment {
-                    val container =
-                        if (activity_noticias_container_secundario != null) {
-                            R.id.activity_noticias_container_secundario
-                        } else {
-                            addToBackStack(null)
-                            R.id.activity_noticias_container_primario
-                        }
-                    replace(container, newInstance, VisualizaNoticiaFragment.TAG)
-                }
-
-            }
+            tentaReabrirFragmentVisualizaNoticia()
         }
+    }
 
+    private fun tentaReabrirFragmentVisualizaNoticia() {
+        supportFragmentManager.findFragmentByTag(VisualizaNoticiaFragment.TAG)?.let {
+            val newInstance = VisualizaNoticiaFragment.newInstance(it.arguments)
+
+            removeFragmentVisualizaNoticia(it)
+
+            transactionFragment {
+                replace(
+                    configuraContainerFragmentVisualizaNoticia(),
+                    newInstance,
+                    VisualizaNoticiaFragment.TAG
+                )
+            }
+
+        }
+    }
+
+    private fun FragmentTransaction.configuraContainerFragmentVisualizaNoticia(): Int {
+        if (activity_noticias_container_secundario != null) {
+            return R.id.activity_noticias_container_secundario
+        }
+        addToBackStack(null)
+        return R.id.activity_noticias_container_primario
     }
 
     override fun onAttachFragment(fragment: Fragment?) {
@@ -63,14 +67,25 @@ class NoticiasActivity : AppCompatActivity() {
             }
 
             is VisualizaNoticiaFragment -> {
-                fragment.onFechar = this::finish
-                fragment.onRemoveNoticia = this::finish
+                fragment.onFechar = {
+                    supportFragmentManager.findFragmentByTag(VisualizaNoticiaFragment.TAG)?.let {
+                        removeFragmentVisualizaNoticia(it)
+                    }
+                }
                 fragment.onEditaNoticia = this::abreFormularioEdicao
             }
 
         }
 
 
+    }
+
+    private fun removeFragmentVisualizaNoticia(it: Fragment) {
+        transactionFragment {
+            remove(it)
+        }
+
+        supportFragmentManager.popBackStack()
     }
 
     private fun abreFormularioEdicao(noticia: Noticia) {
@@ -87,14 +102,11 @@ class NoticiasActivity : AppCompatActivity() {
     private fun abreVisualizadorNoticia(noticia: Noticia) {
 
         transactionFragment {
-            val container =
-                if (activity_noticias_container_secundario != null) {
-                    R.id.activity_noticias_container_secundario
-                } else {
-                    addToBackStack(null)
-                    R.id.activity_noticias_container_primario
-                }
-            replace(container, VisualizaNoticiaFragment.newInstance(noticia.id), VisualizaNoticiaFragment.TAG)
+            replace(
+                configuraContainerFragmentVisualizaNoticia(),
+                VisualizaNoticiaFragment.newInstance(noticia.id),
+                VisualizaNoticiaFragment.TAG
+            )
         }
 
     }

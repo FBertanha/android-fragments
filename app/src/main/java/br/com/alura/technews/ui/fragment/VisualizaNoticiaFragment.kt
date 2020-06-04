@@ -26,7 +26,6 @@ private const val MENSAGEM_FALHA_REMOCAO = "Não foi possível remover notícia"
 class VisualizaNoticiaFragment : BaseFragment() {
 
     var onEditaNoticia: (noticia : Noticia) -> Unit = {}
-    var onRemoveNoticia: () -> Unit = {}
     var onFechar: () -> Unit = {}
 
     private val noticiaId: Long by lazy {
@@ -84,7 +83,7 @@ class VisualizaNoticiaFragment : BaseFragment() {
                 Log.e("", "bbb ${viewModel.noticiaEncontrada.value}")
                 viewModel.noticiaEncontrada.value?.let { onEditaNoticia(it) }
             }
-            R.id.visualiza_noticia_menu_remove -> onRemoveNoticia
+            R.id.visualiza_noticia_menu_remove -> remove()
         }
         return super.onOptionsItemSelected(item)
     }
